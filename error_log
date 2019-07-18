@@ -1,0 +1,22 @@
+[07-Jul-2018 08:06:20 UTC] PHP Fatal error:  Uncaught exception 'ReflectionException' with message 'Class App\Exceptions\Handler does not exist' in /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php:729
+Stack trace:
+#0 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php(729): ReflectionClass->__construct('App\\Exceptions\\...')
+#1 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php(608): Illuminate\Container\Container->build('App\\Exceptions\\...')
+#2 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\Container\Container->resolve('App\\Exceptions\\...', Array)
+#3 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(709): Illuminate\Container\Container->makeWith('App\\Exceptions\\...', Array)
+#4 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/frame in /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 729
+[07-Jul-2018 08:06:20 UTC] PHP Fatal error:  Uncaught exception 'ReflectionException' with message 'Class App\Exceptions\Handler does not exist' in /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php:729
+Stack trace:
+#0 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php(729): ReflectionClass->__construct('App\\Exceptions\\...')
+#1 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php(608): Illuminate\Container\Container->build('App\\Exceptions\\...')
+#2 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\Container\Container->resolve('App\\Exceptions\\...', Array)
+#3 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(709): Illuminate\Container\Container->makeWith('App\\Exceptions\\...', Array)
+#4 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/frame in /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 729
+[07-Jul-2018 08:06:20 UTC] PHP Fatal error:  Uncaught exception 'ReflectionException' with message 'Class App\Exceptions\Handler does not exist' in /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php:729
+Stack trace:
+#0 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php(729): ReflectionClass->__construct('App\\Exceptions\\...')
+#1 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php(608): Illuminate\Container\Container->build('App\\Exceptions\\...')
+#2 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\Container\Container->resolve('App\\Exceptions\\...', Array)
+#3 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(709): Illuminate\Container\Container->makeWith('App\\Exceptions\\...', Array)
+#4 /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/frame in /home/digita39/public_html/Websites/UIG/uig/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 729
+[24-Jul-2018 06:10:41 UTC] PHP Fatal error:  Call to undefined function base_url() in /home/digita39/public_html/Websites/UIG/uig/storage/framework/views/92e2c25e5230c3c1a10fe9c4348f86a801f53a9c.php on line 21
