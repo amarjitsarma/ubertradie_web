@@ -47,6 +47,21 @@ Route::post('/GetTaglines','FreelanceController@GetTaglineAPI');
 Route::post('/SaveKeyword','FreelanceController@SaveKeywordAPI');
 Route::post('/GetKeywords','FreelanceController@GetKeywordsAPI');
 
+Route::get('/GetFreelancers','FreelanceController@GetFreelancersAPI');
+Route::post('/GetFreelancer','FreelanceController@GetFreelancerAPI');
+
+//Project
+Route::get('/LoadSuberbs','ProjectController@LoadSuberbsAPI');
+Route::post('/SaveProject','ProjectController@SaveProjectAPI');
+Route::get('/GetProjects','ProjectController@GetProjectsAPI');
+//Bids
+Route::post('/SaveBid','BidController@SaveBidAPI');
+
+//Quote
+Route::post('/SaveQuote','QuoteController@SaveQuoteAPI');
+Route::post('/GetQuote','QuoteController@GetQuotesAPI');
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

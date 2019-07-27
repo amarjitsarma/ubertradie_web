@@ -94,7 +94,14 @@ class SubCategoryController extends Controller
 	public function GetSubCategoriesAPI(Request $request)
 	{
 		$ID=$request->ID;
-		$SubCategories=DB::table("sub_categories")->where("CategoryID",$ID)->orderby("SubCategoryName")->get();
+		if($ID!="" && $ID!=null)
+		{
+			$SubCategories=DB::table("sub_categories")->where("CategoryID",$ID)->orderby("SubCategoryName")->get();
+		}
+		else	
+		{
+			$SubCategories=DB::table("sub_categories")->orderby("SubCategoryName")->get();
+		}
 		return response()->json(["SubCategories"=>$SubCategories]);
 	}
 }

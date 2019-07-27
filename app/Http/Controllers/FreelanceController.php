@@ -171,4 +171,31 @@ class FreelanceController extends Controller
 		$Keywords=DB::table("fl_keywords")->where("fl_basic_id",$ID)->orderby("keyword")->get();
 		return response()->json(['Keywords'=>$Keywords]);
 	}
+	
+	public function GetFreelancersAPI(Request $request)
+	{
+		$Freelancers=DB::table("fl_basic")->orderby("fullname")->get();
+		for($i=0;$i<sizeof($Freelancers);$i++)
+		{
+			$Freelancers[$i]->Photos=DB::table("fl_photos")->where("fl_basic_id",$Freelancers[$i]->id)->get();
+			$Freelancers[$i]->Contact=DB::table("fl_contact")->where("fl_basic_id",$Freelancers[$i]->id)->first();
+			$Freelancers[$i]->Category=DB::table("categories")->where("ID",$Freelancers[$i]->category)->first();
+			$Freelancers[$i]->SubCategory=DB::table("sub_categories")->where("ID",$Freelancers[$i]->sub_category)->first();
+		}
+		return response()->json(['Freelancers'=>$Freelancers]);
+	}
+	public function GetFreelancerAPI(Request $request)
+	{
+		$Freelancer=DB::table("fl_basic")->where("id",$request["id"])->first();
+		$Freelancer->Photos=DB::table("fl_photos")->where("fl_basic_id",$Freelancer->id)->get();
+		$Freelancer->Contact=DB::table("fl_contact")->where("fl_basic_id",$Freelancer->id)->first();
+		$Freelancer->About=DB::table("fl_about")->where("fl_basic_id",$Freelancer->id)->first();
+		$Freelancer->Keywords=DB::table("fl_keywords")->where("fl_basic_id",$Freelancer->id)->get();
+		$Freelancer->Service=DB::table("fl_services")->where("fl_basic_id",$Freelancer->id)->first();
+		$Freelancer->Taglines=DB::table("fl_tagline")->where("fl_basic_id",$Freelancer->id)->get();
+		$Freelancer->WorkingHour=DB::table("fl_working_hours")->where("fl_basic_id",$Freelancer->id)->first();
+		$Freelancer->Category=DB::table("categories")->where("ID",$Freelancer->category)->first();
+		$Freelancer->SubCategory=DB::table("sub_categories")->where("ID",$Freelancer->sub_category)->first();
+		return response()->json(['Freelancer'=>$Freelancer]);
+	}
 }
