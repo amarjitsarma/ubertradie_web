@@ -9,16 +9,20 @@ use PDF;
 use Sentinel;
 class HomeController extends Controller
 {
-	public function __construct()
+    public function __construct()
     {
 		$SINGLE=array("One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten");
 		$TEN=array("Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Ninteen");
 		$DECA=array("Ten","Twenty","Thirty","Fourty","Fifty","Sixty","Seventy","Eighty","Ninty");
 	}
+    public function Home(Request $request)
+    {
+        return view("home");   
+    }
     public function Dashboard(Request $request)
 	{
 		$data["UserType"]=Sentinel::getUser()->roles()->first()->slug;
-		
+
 		$data["Title"]="Dashboard";
 		$CurrentYear=date("Y");
 		$data["Years"]=[];
@@ -80,7 +84,7 @@ class HomeController extends Controller
 				$data["Salary"]=DB::table("staffsalarys")->where("ID",$Salary[0]->ID)->get();
 				$data["Attendances"]=DB::table("staffattendances")->whereBetween("EntryDate",[$MinDate,$MaxDate])->where("RegisteredID",$StaffID)->get();
 				$data["Leaves"]=DB::table("staffleaves")->whereBetween("LeaveDate",[$MinDate,$MaxDate])->where("StaffID",$StaffID)->get();
-				
+
 				//return view("StaffSalary",$data);
 				$pdf = PDF::loadView('StaffSalary', $data)->setPaper('a5');;
 				return $pdf->download('SalarySlip.pdf');
@@ -121,8 +125,8 @@ class HomeController extends Controller
 		$StaffSalaryPayment->TotalSalary=$Salary-$AbsentPenalty;
 		$StaffSalaryPayment->save();
 	}
-	
-	
+
+
 	public function NUMBERTOTEXT($NUM)
 	{
 		$SINGLE=array("One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten");
@@ -258,7 +262,7 @@ class HomeController extends Controller
 		$TEXT=$TEXT." Rupees Only";
 		return $TEXT;
 	}
-	
+
 	public function GetStudentReceipt(Request $request)
 	{
 		$StudentID=$request["StudentID"];
@@ -278,7 +282,7 @@ class HomeController extends Controller
 	{
 		$data["LocationID"]=Sentinel::getUser()->location;
 		$data["UserType"]=Sentinel::getUser()->roles()->first()->slug;
-		
+
 		$data["Title"]="Student Payment History";
 		$data["PlaceID"]=$request["PlaceID"];
 		$data["StudentID"]=$request["StudentID"];
@@ -291,7 +295,7 @@ class HomeController extends Controller
 			}
 		}
 		$data["Students"]=DB::table("students")->where("PlaceID",$data["PlaceID"])->get();
-		
+
 		if($data["StudentID"]=="")
 		{
 			if(sizeof($data["Students"])>0)
@@ -313,12 +317,12 @@ class HomeController extends Controller
 		$data["Receipts"]=DB::table("students")->join("packages","students.Program","=","packages.ID")->leftJoin("staffs","staffs.ID","=","students.PersonalTrainer")->join("studentpayments","students.ID","=","studentpayments.StudentID")->select("students.ID", "students.PlaceID", "students.BiometricCode", "students.Name", "students.Address", "students.Age", "students.DOB", "students.Sex", "students.HomePhone", "students.MobileNo", "students.WorkPlace", "students.Designation", "students.EmergencyPerson", "students.EmergencyContactNo", "students.HowYouKnow", "students.Program", "students.StartDate", "students.ExpiryDate", "students.MaritalStatus", "students.BloodGroup", "students.AnyMedicalHistory", "students.PersonalTrainer","packages.PackageName","packages.Duration","staffs.Name","studentpayments.PaymentDate",	"studentpayments.ProgramFees","studentpayments.PersonalTrainer","studentpayments.PaidAmount")->where("students.ID",$data["StudentID"])->orderby("studentpayments.PaymentDate")->get();
 		return view("StudentPaymentHistory",$data);
 	}
-	
+
 	public function StaffSalaryHistory(Request $request)
 	{
 		$data["LocationID"]=Sentinel::getUser()->location;
 		$data["UserType"]=Sentinel::getUser()->roles()->first()->slug;
-		
+
 		$data["Title"]="Satff Salary History";
 		$data["PlaceID"]=$request["PlaceID"];
 		$data["StaffID"]=$request["StaffID"];
@@ -331,7 +335,7 @@ class HomeController extends Controller
 			}
 		}
 		$data["Staffs"]=DB::table("staffs")->where("PlaceID",$data["PlaceID"])->get();
-		
+
 		if($data["StaffID"]=="")
 		{
 			if(sizeof($data["Staffs"])>0)
@@ -358,7 +362,7 @@ class HomeController extends Controller
 		//dd($request["PlaceID"]);
 		$data["LocationID"]=Sentinel::getUser()->location;
 		$data["UserType"]=Sentinel::getUser()->roles()->first()->slug;
-		
+
 		$data["Title"]="Personal Trainer History";
 		$data["PlaceID"]=$data["LocationID"];
 		$data["Locations"]=DB::table("locations")->get();
@@ -369,7 +373,7 @@ class HomeController extends Controller
 				$data["PlaceID"]=$data["Locations"][0]->ID;
 			}
 		}
-		
+
 		$data["PersonalTrainers"]=DB::table("trainer_receipts")->join("students","trainer_receipts.StudentID","=","students.ID")->join("staffs","staffs.ID","=","trainer_receipts.TrainerID")->select("students.BiometricCode", "students.Name", "students.Address", "students.Age", "students.DOB", "students.Sex", "students.HomePhone", "students.MobileNo","staffs.BiometricCode", "staffs.Name as Trainer","trainer_receipts.FromDate","trainer_receipts.ToDate")->where("trainer_receipts.ToDate",">",date("Y-m-d"))->where("students.PlaceID",$data["PlaceID"])->orderby("students.ID")->get();
 		return view("PersonalTrainerHistory",$data);
 	}
@@ -395,14 +399,14 @@ class HomeController extends Controller
 		$Balance=$request["Balance"];
 		$AmountToPay=$request["AmountToPay"];
 		$ID=$request["ID"];
-		
+
 		$Balance=$Balance-$AmountToPay;
 		$PaidAmount=$PaidAmount+$AmountToPay;
-		
+
 		DB::table("studentpayments")->where("ID",$ID)->update(array("Balance"=>$Balance,"PaidAmount"=>$PaidAmount));
 		return redirect("/Dashboard");
 	}
-	
+
 	public function SendExpiry(Request $request)
 	{
 		$LocationID=Sentinel::getUser()->location;

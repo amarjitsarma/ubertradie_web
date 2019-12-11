@@ -7,6 +7,22 @@ use DB;
 use App\Quote;
 class QuoteController extends Controller
 {
+	public function getQuotations(){
+		$quotations = DB::table('quote_requests')
+							->orderby('id', 'desc')
+							->get();
+
+		return view('quotations')->with(['quotations' => $quotations, 'Title' => 'Quotations']);
+	}
+
+	public function getQuotationDetails($id){
+		$quotationDtls = DB::table('quote_requests')
+							->where('id', '=', $id)
+							->first();
+
+		return view('quotation-details')->with(['quotationDtls' => $quotationDtls, 'Title' => 'Quotations']);
+	}
+	//API
     public function SaveQuoteAPI(Request $request)
 	{
 		$device_id=$request["device_id"];

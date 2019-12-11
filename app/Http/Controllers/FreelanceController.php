@@ -14,39 +14,80 @@ use App\FlTagline;
 use App\FlWorkingHour;
 class FreelanceController extends Controller
 {
-    
+    public function getFreelancers(){
+    	$freelancers = DB::table('fl_basic')
+    						->orderby('id', 'desc')
+    						->get();
+
+    	return view('freelancer')->with(['freelancers' => $freelancers, 'Title' => 'Freelancer']);
+    }
+
+    public function getFreelancerDetails($id){
+    	$freelancerDtls = DB::table('fl_basic')
+    						->where('id', '=', $id)
+    						->first();
+
+    	return view('freelancer-details')->with(['freelancerDtls' => $freelancerDtls, 'Title' => 'Freelancer']);
+    }
 	
 	//API
 	public function SaveFreeLanceBasicAPI(Request $request)
 	{
-		$FlBasic=new FlBasic();
 		$device_id=$request["device_id"];
 		$Login=DB::table("user_login")->where("DeviceID",$device_id)->where("Status",1)->first();
-		$FlBasic->user_id=$Login->UserID;
-		$FlBasic->category=$request["category"];
-		$FlBasic->sub_category=$request["sub_category"];
-		$FlBasic->fullname=$request["fullname"];
-		$FlBasic->location=$request["location"];
-		$FlBasic->house_no=$request["house_no"];
-		$FlBasic->street_name=$request["street_name"];
-		$FlBasic->suburb=$request["suburb"];
-		$FlBasic->state=$request["state"];
-		$FlBasic->code=$request["code"];
-		$FlBasic->postcode=$request["postcode"];
-		$FlBasic->status=0;
-		$FlBasic->save();
-		$id=$FlBasic->id;
+		$Basic=DB::table("fl_basic")->where("user_id",$Login->UserID)->first();
+		if($Basic==null)
+		{
+			$FlBasic=new FlBasic();
+			$FlBasic->user_id=$Login->UserID;
+			$FlBasic->category=$request["category"];
+			$FlBasic->sub_category=$request["sub_category"];
+			$FlBasic->fullname=$request["fullname"];
+			$FlBasic->location=$request["location"];
+			$FlBasic->house_no=$request["house_no"];
+			$FlBasic->street_name=$request["street_name"];
+			$FlBasic->suburb=$request["suburb"];
+			$FlBasic->state=$request["state"];
+			$FlBasic->code=$request["code"];
+			$FlBasic->postcode=$request["postcode"];
+			$FlBasic->status=0;
+			$FlBasic->save();
+			$id=$FlBasic->id;
+		}
+		else
+		{
+			DB::table("fl_basic")->where("id",$Basic->id)->update(["category"=>$request["category"],"sub_category"=>$request["sub_category"],"fullname"=>$request["fullname"], "location"=>$request["location"], "house_no"=>$request["house_no"], "street_name"=>$request["street_name"], "suburb"=>$request["suburb"], "state"=>$request["state"], "code"=>$request["code"], "postcode"=>$request["postcode"]]);
+			$id=$Basic->id;
+		}
 		return response()->json(['id'=>$id]);
+	}
+	public function ActiveFreelanceAPI(Request $request)
+	{
+		$device_id=$request["device_id"];
+		$Login=DB::table("user_login")->where("DeviceID",$device_id)->where("Status",1)->first();
+		DB::table("fl_basic")->where("user_id",$Login->UserID)->update(["status"=>1]);
+		return response()->json(['Status'=>1]);
 	}
 	public function GetFreeLanceBasicAPI(Request $request)
 	{
-		$basic_id=$request["basic_id"];
-		$Basic=DB::table("fl_basic")->where("id",$basic_id)->first();
+		$device_id=$request["device_id"];
+		if($device_id!="")
+		{
+			$Login=DB::table("user_login")->where("DeviceID",$device_id)->where("Status",1)->first();
+			$user_id=$Login->UserID;
+			$Basic=DB::table("fl_basic")->where("user_id",$user_id)->first();
+		}
+		else
+		{
+			$basic_id=$request["basic_id"];
+			$Basic=DB::table("fl_basic")->where("id",$basic_id)->first();
+		}
 		return response()->json(['Basic'=>$Basic]);
 	}
 	
 	public function SaveWorkingHoursAPI(Request $request)
 	{
+		DB::table("fl_working_hours")->where("fl_basic_id",$request["fl_basic_id"])->delete();
 		$FlWorkingHour=new FlWorkingHour(); 	 	 	
 		$FlWorkingHour->fl_basic_id=$request["fl_basic_id"];
 		$FlWorkingHour->monday=$request["monday"];
@@ -63,12 +104,13 @@ class FreelanceController extends Controller
 	public function GetWorkingHoursAPI(Request $request)
 	{
 		$basic_id=$request["basic_id"];
-		$WorkingHour=DB::table("fl_working_hours")->where("basic_id",$basic_id)->first();
+		$WorkingHour=DB::table("fl_working_hours")->where("fl_basic_id",$basic_id)->first();
 		return response()->json(['WorkingHour'=>$WorkingHour]);
 	}
 	
 	public function SaveContactAPI(Request $request)
 	{
+		DB::table("fl_contact")->where("fl_basic_id",$request["fl_basic_id"])->delete();
 		$FlContact=new FlContact(); 	 	 	 	 	 	 	 	
 		$FlContact->fl_basic_id=$request["fl_basic_id"];
 		$FlContact->phone=$request["phone"];
@@ -83,7 +125,7 @@ class FreelanceController extends Controller
 	public function GetContactAPI(Request $request)
 	{
 		$basic_id=$request["basic_id"];
-		$Contact=DB::table("fl_contact")->where("basic_id",$basic_id)->first();
+		$Contact=DB::table("fl_contact")->where("fl_basic_id",$basic_id)->first();
 		return response()->json(['Contact'=>$Contact]);
 	}
 	
@@ -114,7 +156,8 @@ class FreelanceController extends Controller
 	}
 	public function SaveAboutAPI(Request $request)
 	{
-		$FlAbout=new FlAbout();
+		DB::table("fl_about")->where("fl_basic_id",$request["fl_basic_id"])->delete();
+		$FAbout=new FlAbout();
 		$FAbout->fl_basic_id=$request["fl_basic_id"];
 		$FAbout->short_desc=$request["short_desc"];
 		$FAbout->about=$request["about"];
@@ -124,22 +167,23 @@ class FreelanceController extends Controller
 	public function GetAboutAPI(Request $request)
 	{
 		$basic_id=$request["basic_id"];
-		$About=DB::table("fl_about")->where("basic_id",$basic_id)->first();
+		$About=DB::table("fl_about")->where("fl_basic_id",$basic_id)->first();
 		return response()->json(['About'=>$About]);
 	}
 	
 	public function SaveServiceAPI(Request $request)
 	{
+		DB::table("fl_services")->where("fl_basic_id",$request["fl_basic_id"])->delete();
 		$FlService=new FlService();
 		$FlService->fl_basic_id=$request["fl_basic_id"];
-		$FlService->service=$request["service"];
-		$FAbout->save();
+		$FlService->services=$request["services"];
+		$FlService->save();
 		return response()->json(['status'=>'Done!']);
 	}
 	public function GetServiceAPI(Request $request)
 	{
 		$basic_id=$request["basic_id"];
-		$Service=DB::table("fl_services")->where("basic_id",$basic_id)->first();
+		$Service=DB::table("fl_services")->where("fl_basic_id",$basic_id)->first();
 		return response()->json(['Service'=>$Service]);
 	}
 	
@@ -157,6 +201,15 @@ class FreelanceController extends Controller
 		$Taglines=DB::table("fl_tagline")->where("fl_basic_id",$ID)->orderby("tagline")->get();
 		return response()->json(['Taglines'=>$Taglines]);
 	}
+	public function DeleteTaglineAPI(Request $request)
+	{
+		$IDs=$request["ids"];
+		foreach($IDs as $ID)
+		{
+			DB::table("fl_tagline")->where("id",$ID)->delete();
+		}
+		return response()->json(['Status'=>1]);
+	}
 	public function SaveKeywordAPI(Request $request)
 	{
 		$FlKeyword=new FlKeyword();
@@ -171,16 +224,43 @@ class FreelanceController extends Controller
 		$Keywords=DB::table("fl_keywords")->where("fl_basic_id",$ID)->orderby("keyword")->get();
 		return response()->json(['Keywords'=>$Keywords]);
 	}
-	
+	public function DeleteKeywordAPI(Request $request)
+	{
+		$IDs=$request["ids"];
+		foreach($IDs as $ID)
+		{
+			DB::table("fl_keywords")->where("id",$ID)->delete();
+		}
+		return response()->json(['Status'=>1]);
+	}
 	public function GetFreelancersAPI(Request $request)
 	{
-		$Freelancers=DB::table("fl_basic")->orderby("fullname")->get();
+		$RemoteLocation=$request["RemoteLocation"];
+		$Suburb=$request["Suburb"];
+		$sub_category=$request["sub_category"];
+		$Query=DB::table("fl_basic")->orderby("fullname");
+		if($sub_category!=0)
+		{
+			$Query=$Query->where("sub_category",$sub_category);
+		}
+		if($Suburb=="All")
+		{
+			$Freelancers=$Query->get();
+		}
+		else
+		{
+			$Freelancers=$Query->get();
+		}
+		
 		for($i=0;$i<sizeof($Freelancers);$i++)
 		{
 			$Freelancers[$i]->Photos=DB::table("fl_photos")->where("fl_basic_id",$Freelancers[$i]->id)->get();
 			$Freelancers[$i]->Contact=DB::table("fl_contact")->where("fl_basic_id",$Freelancers[$i]->id)->first();
 			$Freelancers[$i]->Category=DB::table("categories")->where("ID",$Freelancers[$i]->category)->first();
 			$Freelancers[$i]->SubCategory=DB::table("sub_categories")->where("ID",$Freelancers[$i]->sub_category)->first();
+			$Freelancers[$i]->Reviews=DB::table("reviews")->where("tradie_id",$Freelancers[$i]->id)->get();
+			$Freelancers[$i]->ReviewsCount=DB::table("reviews")->where("tradie_id",$Freelancers[$i]->id)->count();
+			$Freelancers[$i]->ReviewsSum=DB::table("reviews")->where("tradie_id",$Freelancers[$i]->id)->sum("rating");
 		}
 		return response()->json(['Freelancers'=>$Freelancers]);
 	}

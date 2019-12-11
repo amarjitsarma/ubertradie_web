@@ -10,12 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/privacy',function(){
+	return view("privacy");
+});
 Route::get('/logout', [
 	'uses'	=> 'LoginController@logout',
 	'as'	=> 'logout',
 ]);
-
 
 Route::group(['middleware' => 'visitors'], function(){
 
@@ -96,4 +97,17 @@ Route::group(['middleware' => 'visitors'], function(){
 	Route::post('/add/user','UserController@CreateUser');
 	Route::get('/User/DeleteUser','UserController@DeleteUser');
 	Route::get('/User/ChangeStatus','UserController@ChangeStatus');
+	//Projects
+	Route::get('/projects', 'ProjectController@getProjects');
+	Route::get('/project-details/{id}', 'ProjectController@getProjectDetails');
+	Route::get('/project/status/{id}', 'ProjectController@projectStatus');
+	Route::get('/project-bid/status/{id}', 'ProjectController@projectBidStatus');
+
+	//Projects
+	Route::get('/freelancers', 'FreelanceController@getFreelancers');
+	Route::get('/freelancer-details/{id}', 'FreelanceController@getFreelancerDetails');
+
+	//Quotations
+	Route::get('/quotations', 'QuoteController@getQuotations');
+	Route::get('/quotation-details/{id}', 'QuoteController@getQuotationDetails');
 });

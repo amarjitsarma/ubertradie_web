@@ -50,9 +50,9 @@
                           <span>Website</span>
                       </a>
                       <ul class="sub">
-						  <li><a  href="/StudnetAttendance">Freelancers</a></li>
-						  <li><a  href="/StaffAttendance">Projects</a></li>
-						  <li><a  href="/StaffAttendance">Quotations</a></li>
+						  <li><a  href="/freelancers">Freelancers</a></li>
+						  <li><a  href="/projects">Projects</a></li>
+						  <li><a  href="/quotations">Quotations</a></li>
                       </ul>
                   </li>
               </ul>

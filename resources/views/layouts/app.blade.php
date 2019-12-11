@@ -9,19 +9,19 @@
 
     <title>{{$Title}}</title>
 
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="{{URL::asset('assets/css/bootstrap.css')}}" rel="stylesheet">
     <!--external css-->
-    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="assets/css/zabuto_calendar.css">
-    <link rel="stylesheet" type="text/css" href="assets/js/gritter/css/jquery.gritter.css" />
-    <link rel="stylesheet" type="text/css" href="assets/lineicons/style.css">    
-	<link rel="stylesheet" type="text/css" href="assets/css/jquery.dataTables.min.css">
-    <link href="assets/css/style.css" rel="stylesheet">
-    <link href="assets/css/style-responsive.css" rel="stylesheet">
+    <link href="{{URL::asset('assets/font-awesome/css/font-awesome.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('assets/css/zabuto_calendar.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('assets/js/gritter/css/jquery.gritter.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('assets/lineicons/style.css')}}">    
+	<link rel="stylesheet" type="text/css" href="{{URL::asset('assets/css/jquery.dataTables.min.css')}}">
+    <link href="{{URL::asset('assets/css/style.css')}}" rel="stylesheet">
+    <link href="{{URL::asset('assets/css/style-responsive.css')}}" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-    <script src="assets/js/chart-master/Chart.js"></script>
+    <script src="{{URL::asset('assets/js/chart-master/Chart.js')}}"></script>
 	
-	<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" href="{{URL::asset('assets/css/bootstrap-datetimepicker.min.css')}}">
 	
   </head>
 
@@ -35,26 +35,26 @@
   </section>
 
     <!-- js placed at the end of the document so the pages load faster -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script class="include" type="text/javascript" src="assets/js/jquery.dcjqaccordion.2.7.js"></script>
-    <script src="assets/js/jquery.scrollTo.min.js"></script>
-    <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
-    <script src="assets/js/jquery.sparkline.js"></script>
-	<script src="assets/js/jquery.dataTables.min.js"></script>
-	<script src="assets/js/dataTables.bootstrap.min.js"></script>
+    <script src="{{URL::asset('assets/js/jquery.min.js')}}"></script>
+    <script src="{{URL::asset('assets/js/bootstrap.min.js')}}"></script>
+    <script class="include" type="text/javascript" src="{{URL::asset('assets/js/jquery.dcjqaccordion.2.7.js')}}"></script>
+    <script src="{{URL::asset('assets/js/jquery.scrollTo.min.js')}}"></script>
+    <script src="{{URL::asset('assets/js/jquery.nicescroll.js')}}" type="text/javascript"></script>
+    <script src="{{URL::asset('assets/js/jquery.sparkline.js')}}"></script>
+	<script src="{{URL::asset('assets/js/jquery.dataTables.min.js')}}"></script>
+	<script src="{{URL::asset('assets/js/dataTables.bootstrap.min.js')}}"></script>
 
     <!--common script for all pages-->
-    <script src="assets/js/common-scripts.js"></script>
+    <script src="{{URL::asset('assets/js/common-scripts.js')}}"></script>
     
-    <script type="text/javascript" src="assets/js/gritter/js/jquery.gritter.js"></script>
-    <script type="text/javascript" src="assets/js/gritter-conf.js"></script>
+    <script type="text/javascript" src="{{URL::asset('assets/js/gritter/js/jquery.gritter.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('assets/js/gritter-conf.js')}}"></script>
 
     <!--script for this page-->
-    <script src="assets/js/sparkline-chart.js"></script>    
-	<script src="assets/js/zabuto_calendar.js"></script>	
-	<script src="assets/js/moment.js"></script>
-	<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="{{URL::asset('assets/js/sparkline-chart.js')}}"></script>    
+	<script src="{{URL::asset('assets/js/zabuto_calendar.js')}}"></script>	
+	<script src="{{URL::asset('assets/js/moment.js')}}"></script>
+	<script src="{{URL::asset('assets/js/bootstrap-datetimepicker.min.js')}}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {

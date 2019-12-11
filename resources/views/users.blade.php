@@ -76,7 +76,7 @@
 								<th>Phone</th>
 								<th>User Name</th>
 								<th>Status</th>
-								<th>Operation</th>
+								<th colspan="2" style="text-align: center;">Operation</th>
                             </tr>
                         </thead>
                         <tbody>
